@@ -23,6 +23,7 @@ public class Day1 {
 				.filter(num1 -> numbers.stream().anyMatch(num2 -> numbers.contains(2020 - num1 - num2 )))
 				.reduce(1, (a, b) -> a * b);
 	}
+	
 	public static String getInput() {
 		return "1934\n" +
 				"1702\n" +
