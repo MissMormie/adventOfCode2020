@@ -8,8 +8,8 @@ import java.util.stream.IntStream;
 public class Day5_BinaryBoarding {
 
 	public static void main(String[] args) {
-		System.out.println("answer A: " + runA(getTextInput()));
-		System.out.println("answer B: " + runB(getTextInput()));
+		System.out.println("answer A: " + runA(getTextInput())); // 951
+		System.out.println("answer B: " + runB(getTextInput())); // 653
 	}
 
 	public static int runA(String input) {
@@ -17,7 +17,6 @@ public class Day5_BinaryBoarding {
 				.map(Day5_BinaryBoarding::getSeatNum)
 				.mapToInt(i -> i)
 				.max().getAsInt();
-
 	}
 
 	public static int runB(String input) {
@@ -35,24 +34,10 @@ public class Day5_BinaryBoarding {
 	}
 
 	private static int getSeatNum(String boardingpass) {
-		int row = 0;
-//		FBFBBFFRLR
-		char[] chars = boardingpass.toCharArray();
-		row += chars[0] == 'B' ? 64 : 0;
-		row += chars[1] == 'B' ? 32 : 0;
-		row += chars[2] == 'B' ? 16 : 0;
-		row += chars[3] == 'B' ? 8 : 0;
-		row += chars[4] == 'B' ? 4 : 0;
-		row += chars[5] == 'B' ? 2 : 0;
-		row += chars[6] == 'B' ? 1 : 0;
-
-		int column = 0;
-
-		column += chars[7] == 'R' ? 4 : 0;
-		column += chars[8] == 'R' ? 2 : 0;
-		column += chars[9] == 'R' ? 1 : 0;
-
-		return row * 8 + column;
+		return Integer.parseInt(boardingpass.replace('B', '1')
+				.replace('R', '1')
+				.replace('F', '0')
+				.replace('L', '0'), 2);
 	}
 
 	private static String getTextInput() {
