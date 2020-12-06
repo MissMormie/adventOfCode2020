@@ -13,38 +13,46 @@ public class Day6_CustomCustoms {
 
 	public static int runA(String input) {
 		return Arrays.stream(input.split("\n\n"))
-				.map(Day6_CustomCustoms::processGroup)
+				.map(Day6_CustomCustoms::findNumQuestionsAnyoneAnsweredYes)
 				.mapToInt(i -> i)
 				.sum();
 	}
-
-
-	private static int processGroup(String groupAnswers) {
-		groupAnswers = groupAnswers.replace("\n", "");
-		return groupAnswers.chars().mapToObj(c -> (char) c)
-								.collect(Collectors.toSet()).size();
-	}
-
-	private static int processGroupAllPeopleAnsweredQuestionYes(String groupAnswers) {
-		String[] answers = groupAnswers.split("\n");
-		return (int) Arrays.stream(answers)
-				.map(answer ->
-					answer.chars().mapToObj(c -> (char) c)
-							.collect(Collectors.toSet()))
-				.collect(Collectors.toList())
-				.stream().flatMap(Collection::stream)
-				.collect(Collectors.groupingBy(c -> c))
-				.values().stream()
-				.filter(list -> list.size() == answers.length)
-				.count();
-	}
-
 
 	public static int runB(String input) {
 		return Arrays.stream(input.split("\n\n"))
-				.map(Day6_CustomCustoms::processGroupAllPeopleAnsweredQuestionYes)
+				.map(Day6_CustomCustoms::findNumQuestionsEveryoneAnsweredYes)
 				.mapToInt(i -> i)
 				.sum();
+	}
+
+	/**
+	 * Counts the number of different questions ANYONE in the group answered yes to
+	 */
+	private static int findNumQuestionsAnyoneAnsweredYes(String groupAnswers) {
+		groupAnswers = groupAnswers.replace("\n", "");
+		return groupAnswers.chars().mapToObj(c -> (char) c)
+				.collect(Collectors.toSet()).size();
+	}
+
+	/**
+	 * Counts the number of different questions EVERYONE in the group answered yes to
+	 */
+	private static int findNumQuestionsEveryoneAnsweredYes(String groupAnswers) {
+		String[] answers = groupAnswers.split("\n");
+		return (int) Arrays.stream(answers)
+				// get set of unique answers per person
+				.map(answer ->
+						answer.chars().mapToObj(c -> (char) c)
+								.collect(Collectors.toSet()))
+				// get list of sets
+				.collect(Collectors.toList())
+				// flatmap all sets into a single list and group them by char, creating a map<char <List<char>>
+				.stream().flatMap(Collection::stream)
+				.collect(Collectors.groupingBy(c -> c))
+				// run through the lists and keep those that have the same number of occurrences as the number of answers
+				.values().stream()
+				.filter(list -> list.size() == answers.length)
+				.count();
 	}
 
 	private static String textInput() {
