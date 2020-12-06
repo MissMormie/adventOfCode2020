@@ -1,14 +1,16 @@
 package days;
 
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.Set;
 import java.util.stream.Collectors;
+
+import static java.util.Arrays.asList;
 
 public class Day6_CustomCustoms {
 
 	public static void main(String[] args) {
-		System.out.println("answer A: " + runA(textInput()));
-		System.out.println("answer B: " + runB(textInput()));
+		System.out.println("answer A: " + runA(textInput())); // 951
+		System.out.println("answer B: " + runB(textInput())); // 653
 	}
 
 	public static int runA(String input) {
@@ -32,27 +34,21 @@ public class Day6_CustomCustoms {
 		groupAnswers = groupAnswers.replace("\n", "");
 		return groupAnswers.chars().mapToObj(c -> (char) c)
 				.collect(Collectors.toSet()).size();
+
 	}
 
 	/**
 	 * Counts the number of different questions EVERYONE in the group answered yes to
 	 */
 	private static int findNumQuestionsEveryoneAnsweredYes(String groupAnswers) {
+		Set<Character> allChars = groupAnswers.chars().mapToObj(c -> (char) c)
+				.collect(Collectors.toSet());
+
 		String[] answers = groupAnswers.split("\n");
-		return (int) Arrays.stream(answers)
-				// get set of unique answers per person
-				.map(answer ->
-						answer.chars().mapToObj(c -> (char) c)
-								.collect(Collectors.toSet()))
-				// get list of sets
-				.collect(Collectors.toList())
-				// flatmap all sets into a single list and group them by char, creating a map<char <List<char>>
-				.stream().flatMap(Collection::stream)
-				.collect(Collectors.groupingBy(c -> c))
-				// run through the lists and keep those that have the same number of occurrences as the number of answers
-				.values().stream()
-				.filter(list -> list.size() == answers.length)
-				.count();
+		Arrays.stream(answers)
+				.forEach(answer -> allChars.retainAll(asList(answer.chars().toArray())));
+
+		return allChars.size();
 	}
 
 	private static String textInput() {
