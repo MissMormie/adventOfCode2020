@@ -25,8 +25,7 @@ public class Day7_HandyHaversacks {
 	public static int runB(String input) {
 		String color = "shiny gold";
 
-		// -1 because it counts shiny golden as well.
-		return bagsThatFitInColor(input, color) - 1;
+		return bagsThatFitInColor(input, color) ;
 	}
 
 	private static void bagsThatContainColor(String input, Set<String> colorSet, String color) {
@@ -55,7 +54,7 @@ public class Day7_HandyHaversacks {
 								int numBagsInColor = 0;
 								numBagsInColor = Integer.parseInt(parts[index].substring(0, parts[index].indexOf(" ")));
 								String newColor = parts[index].substring(parts[index].indexOf(" ") + 1);
-								int i = numBagsInColor * bagsThatFitInColor(input, newColor);
+								int i = numBagsInColor + numBagsInColor * bagsThatFitInColor(input, newColor);
 								bagsInside.num += i;
 							});
 				});
@@ -660,6 +659,6 @@ public class Day7_HandyHaversacks {
 	}
 
 	private static class IntegerWrapper {
-		int num = 1;
+		int num = 0;
 	}
 }
