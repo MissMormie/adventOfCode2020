@@ -6,7 +6,92 @@ import java.util.Set;
 
 public class Day8_HandheldHalting {
 
-	public static String getInput() {
+	public static void main(String[] args) {
+		System.out.println("answer A: " + runA(textInput()));
+		System.out.println("answer B: " + runB(textInput()));
+	}
+
+	public static int runA(String input) {
+		String[] instructions = input.split("\n");
+		int accumulator = 0;
+		Set<Integer> instructionSet = new HashSet<>();
+		Integer index = 0;
+		do {
+			String[] instruction = instructions[index].split(" ");
+			if (instructionSet.contains(index)) {
+				return accumulator;
+			}
+			instructionSet.add(index);
+
+			switch (instruction[0]) {
+				case "nop":
+					index++;
+					break;
+				case "acc":
+					accumulator += Integer.parseInt(instruction[1].replace("+", ""));
+					index++;
+					break;
+				case "jmp":
+					index += Integer.parseInt(instruction[1].replace("+", ""));
+					break;
+			}
+
+		} while (true);
+	}
+
+	public static int runB(String input1) {
+		int index = 0;
+		do {
+			String[] split = textInput().split("\n");
+			if (split[index].contains("nop")) {
+				split[index] = split[index].replace("nop", "jmp");
+			} else if (split[index].contains("jmp")) {
+				split[index] = split[index].replace("jmp", "nop");
+			}
+
+			Optional<Integer> integer = doesProgramTerminate(split);
+			if (integer.isPresent()) {
+				return integer.get();
+			}
+
+			index++;
+		} while (true);
+
+	}
+
+	private static Optional<Integer> doesProgramTerminate(String[] instructions) {
+		Set<Integer> instructionSet = new HashSet<>();
+		int accumulator = 0;
+
+		Integer index = 0;
+		do {
+			if (index >= instructions.length) {
+				return Optional.of(accumulator);
+			}
+			String[] instruction = instructions[index].split(" ");
+			if (instructionSet.contains(index)) {
+				return Optional.empty();
+			}
+			instructionSet.add(index);
+
+			switch (instruction[0]) {
+				case "nop":
+					index++;
+					break;
+				case "acc":
+					accumulator += Integer.parseInt(instruction[1].replace("+", ""));
+					index++;
+					break;
+				case "jmp":
+					index += Integer.parseInt(instruction[1].replace("+", ""));
+					break;
+			}
+
+		} while (true);
+
+	}
+
+	private static String textInput() {
 		return "jmp +11\n" +
 				"nop +495\n" +
 				"nop +402\n" +
@@ -667,90 +752,5 @@ public class Day8_HandheldHalting {
 				"acc +31\n" +
 				"nop -407\n" +
 				"jmp +1";
-	}
-
-	public static void main(String[] args) {
-		System.out.println("answer A: " + runA(getInput()));
-		System.out.println("answer B: " + runB(getInput()));
-	}
-
-	public static int runA(String input) {
-		String[] instructions = input.split("\n");
-		int accumulator = 0;
-		Set<Integer> instructionSet = new HashSet<>();
-		Integer index = 0;
-		do {
-			String[] instruction = instructions[index].split(" ");
-			if (instructionSet.contains(index)) {
-				return accumulator;
-			}
-			instructionSet.add(index);
-
-			switch (instruction[0]) {
-				case "nop":
-					index++;
-					break;
-				case "acc":
-					accumulator += Integer.parseInt(instruction[1].replace("+", ""));
-					index++;
-					break;
-				case "jmp":
-					index += Integer.parseInt(instruction[1].replace("+", ""));
-					break;
-			}
-
-		} while (true);
-	}
-
-	public static int runB(String input1) {
-		int index = 0;
-		do {
-			String[] split = getInput().split("\n");
-			if (split[index].contains("nop")) {
-				split[index] = split[index].replace("nop", "jmp");
-			} else if (split[index].contains("jmp")) {
-				split[index] = split[index].replace("jmp", "nop");
-			}
-
-			Optional<Integer> integer = doesProgramTerminate(split);
-			if(integer.isPresent()) {
-				return integer.get();
-			}
-
-			index++;
-		} while (true);
-
-	}
-
-	private static Optional<Integer> doesProgramTerminate(String[] instructions ) {
-		Set<Integer> instructionSet = new HashSet<>();
-		int accumulator = 0;
-
-		Integer index = 0;
-		do {
-			if (index >= instructions.length) {
-				return Optional.of(accumulator);
-			}
-			String[] instruction = instructions[index].split(" ");
-			if (instructionSet.contains(index)) {
-				return Optional.empty();
-			}
-			instructionSet.add(index);
-
-			switch (instruction[0]) {
-				case "nop":
-					index++;
-					break;
-				case "acc":
-					accumulator += Integer.parseInt(instruction[1].replace("+", ""));
-					index++;
-					break;
-				case "jmp":
-					index += Integer.parseInt(instruction[1].replace("+", ""));
-					break;
-			}
-
-		} while (true);
-
 	}
 }
