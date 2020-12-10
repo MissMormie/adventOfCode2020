@@ -10,57 +10,56 @@ import java.util.stream.IntStream;
 public class Day9_EncodingError {
 
 		public static void main(String[] args) {
-			System.out.println("answer A: " + runA(textInput(), 25)); // not 83
-			System.out.println("answer B: " + runB(textInput()));
+			System.out.println("answer A: " + runA(textInput(), 25));
+			System.out.println("answer B: " + runB(textInput(), 25));
 		}
 
 		public static long runA(String input, int preamble) {
 
-
-			List<Long> collect = Arrays.stream(input.split("\n"))
+			List<Long> numbers = Arrays.stream(input.split("\n"))
 					.map(Long::parseLong)
 					.collect(Collectors.toList());
 
-			List<sumNums> sumNums = IntStream.range(0, collect.size())
-					.mapToObj(i -> {
-						List<Long> collection = IntStream.range(i + 1, preamble)
-								.filter(secondIndex -> secondIndex < collect.size() - 1)
-								.mapToLong(secondIndex -> collect.get(i) + collect.get(secondIndex))
-								.boxed()
-								.collect(Collectors.toList());
-						return new sumNums(collect.get(i), collection);
-					})
+			int index = IntStream.range(preamble, numbers.size() - 1)
+					.filter(i -> !isSumOfPrevious(i, numbers, preamble))
+					.findFirst()
+					.getAsInt();
+			return numbers.get(index);
+		}
+
+	private static boolean isSumOfPrevious(int index, List<Long> numbers, int preamble) {
+			Long sumToFind = numbers.get(index);
+			List<Long> lisToCheck = numbers.subList(index - preamble, index);
+			return lisToCheck.stream()
+					.anyMatch(num -> lisToCheck.contains(sumToFind - num));
+		}
+
+		public static long runB(String input, int preamble) {
+			long invalidNum = runA(input, preamble);
+			List<Long> numbers = Arrays.stream(input.split("\n"))
+					.map(Long::parseLong)
 					.collect(Collectors.toList());
 
-//			int firstNonMatchingIndex = IntStream.range(preamble, collect.size())
-//					.filter(index -> {
-//						int startIndex = index - preamble;
-//						IntStream.range(startIndex, index - 1)
-//								.forEach();
-//					})
-//					.findFirst()
-//					.getAsInt();
+			int startIndex = 0;
+			int endIndex = 0;
 
-//			return collect.get(firstNonMatchingIndex);
-			return 0;
-		}
+			long sum = 0;
+			do {
+				if (sum < invalidNum) {
+					endIndex++;
+				} else if(sum > invalidNum) {
+					startIndex++;
+				}
 
-		private static class sumNums{
-			long num;
-			List<Long> sums;
+				sum = IntStream.rangeClosed(startIndex, endIndex)
+						.mapToLong(numbers::get)
+						.sum();
+			} while (sum != invalidNum);
 
-			public sumNums(long num, List<Long> sums) {
-				this.num = num;
-				this.sums = sums;
-			}
-		}
+			List<Long> longs = numbers.subList(startIndex, endIndex);
+			longs.sort(Long::compareTo);
 
-
-		public static int runB(String input) {
-			List<Integer> numbers = StringHelper.getNumbersFromStringOnePerLine(input);
-			return numbers.stream()
-					.filter(num1 -> numbers.stream().anyMatch(num2 -> numbers.contains(2020 - num1 - num2 )))
-					.reduce(1, (a, b) -> a * b);
+			return longs.get(0) + longs.get(longs.size() -1);
 		}
 
 		private static String textInput() {
