@@ -37,6 +37,6 @@ class Day5_BinaryBoardingTest {
 
 		input = "";
 		answer = 0;
-		assertEquals(answer, Day0.runB(input), "input = " + input + " answer: " + answer);
+//		assertEquals(answer, Day5_BinaryBoarding.runB(input), "input = " + input + " answer: " + answer);
 	}
 }
