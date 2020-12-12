@@ -1,6 +1,5 @@
 package days;
 
-import helpers.Coordinate;
 import helpers.DirectionalMovingObject;
 
 import java.util.Arrays;
@@ -23,48 +22,27 @@ public class Day12_RainRisk {
 		char instruction = line.charAt(0);
 		int num = Integer.parseInt(line.substring(1));
 		switch (instruction) {
-			case 'N':
-				ferry.turnInDirection(UP);
-				ferry.move(num);
-				break;
-			case 'S':
-				ferry.turnInDirection(DOWN);
-				ferry.move(num);
-				break;
-			case 'E':
-				ferry.turnInDirection(RIGHT);
-				ferry.move(num);
-				break;
-			case 'W':
-				ferry.turnInDirection(LEFT);
-				ferry.move(num);
-				break;
-			case 'F':
-				ferry.move(num);
-				break;
-			case 'L':
-				IntStream.range(0, num / 90).forEach(i -> ferry.turnLeft());
-				return;
-			case 'R':
-				IntStream.range(0, num / 90).forEach(i -> ferry.turnRight());
-				return;
+			case 'N': ferry.turnInDirection(UP); ferry.move(num); break;
+			case 'S': ferry.turnInDirection(DOWN); ferry.move(num); break;
+			case 'E': ferry.turnInDirection(RIGHT); ferry.move(num); break;
+			case 'W': ferry.turnInDirection(LEFT); ferry.move(num); break;
+			case 'F': ferry.move(num); return;
+			case 'L': IntStream.range(0, num / 90).forEach(i -> ferry.turnLeft()); return;
+			case 'R': IntStream.range(0, num / 90).forEach(i -> ferry.turnRight()); return;
 		}
 
 		ferry.direction = previousDirection;
-
 	}
 
 	public static void moveFerryAndWayPoint(String line, DirectionalMovingObject ferry, DirectionalMovingObject waypoint) {
-		DirectionalMovingObject.Direction previousDirection = ferry.direction;
 		char instruction = line.charAt(0);
 		int num = Integer.parseInt(line.substring(1));
 
-
 		switch (instruction) {
 			case 'N': waypoint.turnInDirection(UP); waypoint.move(num); break;
-			case 'S' : waypoint.turnInDirection(DOWN); waypoint.move(num); break;
-			case 'E' : waypoint.turnInDirection(RIGHT); waypoint.move(num); break;
-			case 'W' : waypoint.turnInDirection(LEFT); waypoint.move(num); break;
+			case 'S': waypoint.turnInDirection(DOWN); waypoint.move(num); break;
+			case 'E': waypoint.turnInDirection(RIGHT); waypoint.move(num); break;
+			case 'W': waypoint.turnInDirection(LEFT); waypoint.move(num); break;
 			// F10 moves the ship to the waypoint 10 times (a total of 100 units east and 10 units north),
 			// leaving the ship at east 100, north 10. The waypoint stays 10 units east and 1 unit north of the ship.
 			case 'F':
@@ -76,30 +54,22 @@ public class Day12_RainRisk {
 				waypoint.coordinate.y += waypointRelativeY;
 				break;
 
-			case 'L' : IntStream.range(0, num / 90).forEach(i -> {
-				int waypointRelX = (waypoint.coordinate.x - ferry.coordinate.x);
-				int waypointRelY = (waypoint.coordinate.y - ferry.coordinate.y);
-				int tempY = waypointRelY;
-				waypointRelY = waypointRelX;
-				waypointRelX = -tempY;
-				waypoint.coordinate.x = ferry.coordinate.x + waypointRelX;
-				waypoint.coordinate.y = ferry.coordinate.y + waypointRelY;
-
-			}); break;
-			case 'R' : IntStream.range(0, num / 90).forEach(i -> {
-				int waypointRelX = (waypoint.coordinate.x - ferry.coordinate.x);
-				int waypointRelY = (waypoint.coordinate.y - ferry.coordinate.y);
-				int tempY = waypointRelY;
-				waypointRelY = -waypointRelX;
-				waypointRelX = tempY;
-				waypoint.coordinate.x = ferry.coordinate.x + waypointRelX;
-				waypoint.coordinate.y = ferry.coordinate.y + waypointRelY;
-
-			}); break;
+			// Action L means to rotate the waypoint around the ship left (counter-clockwise) the given number of degrees.
+			case 'L':
+				IntStream.range(0, num / 90).forEach(i -> {
+					int tempY = (waypoint.coordinate.y - ferry.coordinate.y);
+					waypoint.coordinate.y = ferry.coordinate.y + (waypoint.coordinate.x - ferry.coordinate.x);
+					waypoint.coordinate.x = ferry.coordinate.x + -tempY;
+				});
+				break;
+			case 'R':
+				IntStream.range(0, num / 90).forEach(i -> {
+					int tempY = (waypoint.coordinate.y - ferry.coordinate.y);
+					waypoint.coordinate.y = ferry.coordinate.y + -(waypoint.coordinate.x - ferry.coordinate.x);
+					waypoint.coordinate.x = ferry.coordinate.x + tempY;
+				});
+				break;
 		}
-
-		ferry.direction = previousDirection;
-
 	}
 
 	public static int runA(String input) {
@@ -107,8 +77,7 @@ public class Day12_RainRisk {
 		Arrays.stream(input.split("\n"))
 				.forEach(line -> moveFerry(line, ferry));
 
-		Coordinate startPoint = new Coordinate(0, 0);
-		return startPoint.getManhattanDistance(ferry.coordinate);
+		return ferry.coordinate.getManhattanDistance(0,0);
 	}
 
 	public static int runB(String input) {
@@ -118,8 +87,7 @@ public class Day12_RainRisk {
 		Arrays.stream(input.split("\n"))
 				.forEach(line -> moveFerryAndWayPoint(line, ferry, waypoint));
 
-		Coordinate startPoint = new Coordinate(0, 0);
-		return startPoint.getManhattanDistance(ferry.coordinate);
+		return ferry.coordinate.getManhattanDistance(0,0);
 	}
 
 	private static String textInput() {
