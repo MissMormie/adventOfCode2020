@@ -19,9 +19,8 @@ public class Day12_RainRisk {
 
 	public static void moveFerry(String line, DirectionalMovingObject ferry) {
 		DirectionalMovingObject.Direction previousDirection = ferry.direction;
-		char instruction = line.charAt(0);
 		int num = Integer.parseInt(line.substring(1));
-		switch (instruction) {
+		switch (line.charAt(0)) {
 			case 'N': ferry.turnInDirection(UP); ferry.move(num); break;
 			case 'S': ferry.turnInDirection(DOWN); ferry.move(num); break;
 			case 'E': ferry.turnInDirection(RIGHT); ferry.move(num); break;
@@ -30,7 +29,6 @@ public class Day12_RainRisk {
 			case 'L': IntStream.range(0, num / 90).forEach(i -> ferry.turnLeft()); return;
 			case 'R': IntStream.range(0, num / 90).forEach(i -> ferry.turnRight()); return;
 		}
-
 		ferry.direction = previousDirection;
 	}
 

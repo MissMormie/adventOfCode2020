@@ -8,7 +8,7 @@ import java.util.Map;
 public class Coordinate implements Comparable<Coordinate>{
     public int x;
     public int y;
-    public List adjacentCoords;
+    public List<Coordinate> adjacentCoords;
 
     public int intValue;
 
@@ -57,9 +57,13 @@ public class Coordinate implements Comparable<Coordinate>{
         return makeCoordString(x, y);
     }
 
-    // TODO if i need this function, be sure to include the new vars
     public Coordinate clone() {
-        return new Coordinate(x, y);
+        Coordinate coordinate = new Coordinate(x, y);
+        coordinate.adjacentCoords = adjacentCoords;
+        coordinate.bigIntegerValue = bigIntegerValue;
+        coordinate.intValue = intValue;
+        coordinate.longValue = longValue;
+        return coordinate;
     }
 
     public void saveAdjacent(Map<String,Coordinate> coordinateMap) {

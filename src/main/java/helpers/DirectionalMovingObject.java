@@ -43,6 +43,16 @@ public class DirectionalMovingObject {
                 .forEach(i-> move());
     }
 
+    public void moveBy(Coordinate coordinate) {
+        moveBy(coordinate.x, coordinate.y);
+    }
+
+    public void moveBy(int x, int y){
+        this.coordinate.x += x;
+        this.coordinate.y += y;
+
+    }
+
     public void moveInDirection(Direction dir) {
         direction = dir;
         move();
