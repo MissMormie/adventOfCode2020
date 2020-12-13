@@ -34,32 +34,31 @@ public class Day13_ShuttleSearch {
 		List<Bus> busses = IntStream.range(0, instructions.length)
 				.filter(i -> !"x".equals(instructions[i]))
 				.mapToObj(index -> new Bus(Integer.parseInt(instructions[index]), index))
-				.collect(Collectors.toList());
-		busses.sort(Comparator.comparing(bus -> bus.id));
+				.sorted(Comparator.comparing(bus -> bus.id)).collect(Collectors.toList());
+
+		// Reversing so when matching the slower busses are tried first so we get as few tries as possible.
 		Collections.reverse(busses);
 
-		Bus highestBus = busses.get(0);
+		Bus slowestBus = busses.get(0);
 		Bus secondBus = busses.get(1);
 
-
-		// Get interval between which the highest two busses id's coincide;
-		long timestamp = highestBus.id - highestBus.offset;
-		long interval = highestBus.id;
+		// Get the first time the two slowest busses match the requirement
+		long timestamp = slowestBus.id - slowestBus.offset;
+		long interval = slowestBus.id;
 		do {
-			if(highestBus.fitsSchedule(timestamp) && secondBus.fitsSchedule(timestamp))	break;
+			if(slowestBus.fitsSchedule(timestamp) && secondBus.fitsSchedule(timestamp))	break;
 			timestamp += interval;
 		} while (true);
+
 
 		// Timestamp is now first occasion
-		long firstMatch = timestamp;
-		timestamp += interval;
-		do {
-			if(highestBus.fitsSchedule(timestamp) && secondBus.fitsSchedule(timestamp))	break;
-			timestamp += interval;
-		} while (true);
-		interval = timestamp - firstMatch;
-
 		// Interval is now how often the highest two busses coincide, skipping lots of options.
+		interval = slowestBus.id * secondBus.id;
+
+		// Remove the first two busses, the interval is set to always match these so we do not need to check them.
+		// Yes, this could be done earlier but this makes sense in my head.
+		busses.remove(slowestBus);
+		busses.remove(secondBus);
 
 		do {
 			if(allBussesFitSchedule(timestamp,busses)) {
@@ -67,7 +66,6 @@ public class Day13_ShuttleSearch {
 			}
 			timestamp += interval;
 		} while (true);
-//		return 0;
 	}
 
 	private static boolean allBussesFitSchedule(long timestamp, List<Bus> busses) {
