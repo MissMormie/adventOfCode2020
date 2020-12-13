@@ -1,6 +1,7 @@
 package days;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +12,12 @@ public class Day13_ShuttleSearch {
 
 	public static void main(String[] args) {
 		System.out.println("answer A: " + runA(textInput(), timestamp())); // 2165
-		System.out.println("answer B: " + runB(textInput())); // 534035653563227
+		long startTime = System.nanoTime();
+		System.out.println("answer B: " + runB(textInput()));
+		long endTime = System.nanoTime();
+		long timeElapsed = endTime - startTime;
+
+		System.out.println("Execution time in milliseconds : " + timeElapsed / 1000000);
 	}
 
 	public static int runA(String input, int timestamp) {
@@ -23,17 +29,37 @@ public class Day13_ShuttleSearch {
 		return Integer.parseInt(mapEntry.getKey()) * mapEntry.getValue();
 	}
 
-
 	public static long runB(String input) {
 		String[] instructions = input.split(",");
 		List<Bus> busses = IntStream.range(0, instructions.length)
 				.filter(i -> !"x".equals(instructions[i]))
 				.mapToObj(index -> new Bus(Integer.parseInt(instructions[index]), index))
 				.collect(Collectors.toList());
+		busses.sort(Comparator.comparing(bus -> bus.id));
+		Collections.reverse(busses);
 
-		Bus highestIdBus = busses.stream().max(Comparator.comparingLong(bus -> bus.id)).get();
-		long interval = highestIdBus.id;
-		long timestamp = highestIdBus.id - highestIdBus.offset;
+		Bus highestBus = busses.get(0);
+		Bus secondBus = busses.get(1);
+
+
+		// Get interval between which the highest two busses id's coincide;
+		long timestamp = highestBus.id - highestBus.offset;
+		long interval = highestBus.id;
+		do {
+			if(highestBus.fitsSchedule(timestamp) && secondBus.fitsSchedule(timestamp))	break;
+			timestamp += interval;
+		} while (true);
+
+		// Timestamp is now first occasion
+		long firstMatch = timestamp;
+		timestamp += interval;
+		do {
+			if(highestBus.fitsSchedule(timestamp) && secondBus.fitsSchedule(timestamp))	break;
+			timestamp += interval;
+		} while (true);
+		interval = timestamp - firstMatch;
+
+		// Interval is now how often the highest two busses coincide, skipping lots of options.
 
 		do {
 			if(allBussesFitSchedule(timestamp,busses)) {
@@ -41,6 +67,7 @@ public class Day13_ShuttleSearch {
 			}
 			timestamp += interval;
 		} while (true);
+//		return 0;
 	}
 
 	private static boolean allBussesFitSchedule(long timestamp, List<Bus> busses) {

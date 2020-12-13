@@ -24,6 +24,10 @@ class Day13_ShuttleSearchTest {
 		String input;
 		long answer;
 
+		input = "3,5,x,7";
+		answer = 39;
+		assertEquals(answer, Day13_ShuttleSearch.runB(input), "input = " + input + " answer: " + answer);
+
 		input = "7,13,x,x,59,x,31,19";
 		answer = 1068781;
 		assertEquals(answer, Day13_ShuttleSearch.runB(input), "input = " + input + " answer: " + answer);
@@ -43,5 +47,10 @@ class Day13_ShuttleSearchTest {
 		input = "1789,37,47,1889";
 		answer = 1202161486;
 		assertEquals(answer, Day13_ShuttleSearch.runB(input), "input = " + input + " answer: " + answer);
+
+		input = "1789,37,47,1889";
+		answer = 1202161486;
+		assertEquals(answer, Day13_ShuttleSearch.runB(input), "input = " + input + " answer: " + answer);
+
 	}
 }
