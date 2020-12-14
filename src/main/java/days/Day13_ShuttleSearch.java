@@ -50,7 +50,6 @@ public class Day13_ShuttleSearch {
 			timestamp += interval;
 		} while (true);
 
-
 		// Timestamp is now first occasion
 		// Interval is now how often the highest two busses coincide, skipping lots of options.
 		interval = slowestBus.id * secondBus.id;
