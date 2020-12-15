@@ -55,7 +55,6 @@ public class Day14_DockingData {
 
 		memoryMapA.put(pieces[1], bits);
 		return bits;
-
 	}
 
 	private static BitSet getBitSetFromIntString(String num) {
