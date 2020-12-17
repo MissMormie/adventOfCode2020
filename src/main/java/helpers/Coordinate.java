@@ -14,6 +14,8 @@ public class Coordinate implements Comparable<Coordinate>{
 
     public long longValue;
 
+    public boolean booleanValue;
+
     public BigInteger getBigIntegerValue() {
         return bigIntegerValue;
     }
