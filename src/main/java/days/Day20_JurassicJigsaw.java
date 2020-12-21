@@ -78,12 +78,12 @@ public class Day20_JurassicJigsaw {
 		int count =0;
 		// Try the 4 directions, flip, than try 4 directions again.
 		for(int i = 0; i < 4; i++) {
-			count = countSeaMonsters(radarImage);
+			count = countSeaMonsters(radarImage, '#');
 			radarImage = StringHelper.rotateBlockLeft(radarImage);
 		}
-		radarImage = StringHelper.flipString(radarImage);
+		radarImage = StringHelper.flipBlock(radarImage);
 		for(int i = 0; i < 4; i++) {
-			count = countSeaMonsters(radarImage);
+			count = countSeaMonsters(radarImage, '#');
 			radarImage = StringHelper.rotateBlockLeft(radarImage);
 		}
 
@@ -107,39 +107,40 @@ public class Day20_JurassicJigsaw {
 			" #  #  #  #  #  #   ";
 	static String[] nessie = nessieFull.split("\n");
 
-	private static int countSeaMonsters(String radarImage) {
+	public static int countSeaMonsters(String radarImage, char c) {
 		String[] splitRadarImage = radarImage.split("\n");
-		return (int) IntStream.range(0, splitRadarImage.length - 2) // rows
-			.mapToObj(i -> IntStream.range(nessie[0].length() + 1, splitRadarImage[0].length())
-					.filter(j -> isNessieAt(splitRadarImage, i, j))
+		return (int) IntStream.range(nessie[0].length() - 2 , splitRadarImage.length - 2) // rows
+			.mapToObj(x -> IntStream.range(0, splitRadarImage.length - nessie.length)
+					.filter(y -> isNessieAt(splitRadarImage, x, y, c))
 					.mapToObj(a -> true)
 					.collect(Collectors.toList()))
 				.flatMap(Collection::stream)
 				.count();
 	}
 
-	private static boolean isNessieAt(String[] radarImageLines, int x, int y) {
-		if(radarImageLines[x].charAt(y) != '#')
+	public static boolean isNessieAt(String[] radarImageLines, int x, int y, char c) {
+		if(radarImageLines[y].charAt(x) != c)
 			return false;
 
 		// Does second line nessie match up
 		boolean b = IntStream.range(0, nessie[1].length())
 				.allMatch(i -> {
 					if (nessie[1].charAt(i) == '#') {
-						return radarImageLines[x + 1].charAt(y - nessie[1].length() + i) == '#';
+						return radarImageLines[y + 1].charAt(x - (nessie[1].length() - 2) + i) == c;
 					}
 					return true;
 				});
 		if(!b) return false;
 
 		// Does third line nessie match up
-		return IntStream.range(0, nessie[2].length())
+		boolean b1 = IntStream.range(0, nessie[2].length())
 				.allMatch(i -> {
 					if (nessie[2].charAt(i) == '#') {
-						return radarImageLines[x + 2].charAt(y - nessie[1].length() - i) == '#';
+						return radarImageLines[y + 2].charAt(x - (nessie[2].length() - 2) + i) == c;
 					}
 					return true;
 				});
+		return b1;
 	}
 
 	private static class PuzzlePiece {
