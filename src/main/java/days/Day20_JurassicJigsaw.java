@@ -28,7 +28,6 @@ public class Day20_JurassicJigsaw {
 		return PuzzlePieces.stream().filter(p -> p.isCorner()).mapToLong(p -> p.name).reduce((a, b) -> a * b).getAsLong();
 	}
 
-
 	public static int runB(String input) {
 		input = input.replace(".", "_");
 		List<PuzzlePiece> puzzlePieces = Arrays.stream(input.split("\n\n"))
@@ -40,8 +39,6 @@ public class Day20_JurassicJigsaw {
 		puzzlePieces.stream().forEach(p -> p.setOccurencesOfSides(sidesMap));
 		PuzzlePiece corner = puzzlePieces.stream().filter(PuzzlePiece::isCorner).findAny().get();
 
-
-//		puzzlePieces.removeAll(puzzlePieces.stream().filter(p -> p.name != 1427 && p.name != 2311 && p.name != 2729 && p.name != 1951).collect(Collectors.toList()));
 		int sqrt = (int) Math.sqrt(puzzlePieces.size());
 		Map<Integer, Map<Integer, PuzzlePiece>> puzzle = new HashMap<>();
 		IntStream.range(0, sqrt)
@@ -79,8 +76,15 @@ public class Day20_JurassicJigsaw {
 //		System.out.println(radarImage);
 
 		int count =0;
-		while(count == 0) {
+		// Try the 4 directions, flip, than try 4 directions again.
+		for(int i = 0; i < 4; i++) {
 			count = countSeaMonsters(radarImage);
+			radarImage = StringHelper.rotateBlockLeft(radarImage);
+		}
+		radarImage = StringHelper.flipString(radarImage);
+		for(int i = 0; i < 4; i++) {
+			count = countSeaMonsters(radarImage);
+			radarImage = StringHelper.rotateBlockLeft(radarImage);
 		}
 
 		return getNumWaves(radarImage) - getNumWaves(nessieFull) * count;
@@ -248,7 +252,7 @@ public class Day20_JurassicJigsaw {
 		}
 
 		void rotateBlock1Left() {
-			block = StringHelper.rotateBlockRight(block);
+			block = StringHelper.rotateBlockLeft(block);
 			// change the order of the sides in the sides list to match the new orientation.
 			resetSides();
 		}

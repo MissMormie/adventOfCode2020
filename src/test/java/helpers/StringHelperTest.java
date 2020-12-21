@@ -1,6 +1,5 @@
 package helpers;
 
-import days.Day19_MonsterMessages;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -39,7 +38,7 @@ class StringHelperTest {
 				"852\n" +
 				"963";
 
-		assertEquals(result, StringHelper.rotateBlockRight(input));
+		assertEquals(result, StringHelper.rotateBlockLeft(input));
 
 	}
 }

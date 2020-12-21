@@ -53,7 +53,7 @@ public class StringHelper {
 		.collect(Collectors.joining("\n"));
 	}
 
-	public static String rotateBlockRight(String block) {
+	public static String rotateBlockLeft(String block) {
 		String[] split = block.split("\n");
 		List<StringBuilder> stringBuilders = new ArrayList<>();
 		IntStream.range(0, split[0].length()).forEach(i -> stringBuilders.add(new StringBuilder()));
