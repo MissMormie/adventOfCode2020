@@ -2,7 +2,9 @@ package helpers;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.IntStream;
 
 public class CircularLinkedList<T> {
@@ -31,11 +33,15 @@ public class CircularLinkedList<T> {
 
 		Node<T> nextNode = currentNode.getNextNode();
 		Node<T> newNode = new Node<>(object, nextNode, currentNode);
+
 		currentNode.setNextNode(newNode);
 		nextNode.setPreviousNode(newNode);
 
 		// Set created node as current node.
 		currentNode = newNode;
+		if(currentNode.nextNode == currentNode) {
+			System.out.println("Only ok for first node");
+		}
 		return this;
 	}
 
@@ -139,6 +145,7 @@ public class CircularLinkedList<T> {
 	 * @return T
 	 */
 	public T removeCurrent() {
+
 		// Only a single node exists
 		if(currentNode.nextNode == currentNode) {
 			Node<T> tempNode = currentNode;
@@ -146,6 +153,10 @@ public class CircularLinkedList<T> {
 			firstNode = null;
 			numNodes--;
 			return tempNode.get();
+		}
+		if((int) currentNode.get() == 940962) {
+
+			System.out.println("Issues");
 		}
 
 		if(currentNode == firstNode) {
@@ -159,6 +170,10 @@ public class CircularLinkedList<T> {
 		nextNode.setPreviousNode(previousNode);
 		currentNode = nextNode;
 		numNodes--;
+
+		if(currentNode.nextNode == currentNode) {
+			System.out.println("Issues");
+		}
 		return tempNode.get();
 	}
 
@@ -167,12 +182,26 @@ public class CircularLinkedList<T> {
 	}
 
 	/**
-	 * This has the potential to break everything. Use in production code with exteme care.
+	 * This has the potential to break everything. Use in production code with extreme care.
 	 * @param object
 	 */
 	public CircularLinkedList<T> setCurrent(Node<T> object) {
 		currentNode = object;
 		return this;
+	}
+
+	public String getStringFromList(String joining) {
+		StringBuilder sb = new StringBuilder();
+		previous();
+		IntStream.range(0, size()).forEach(i -> sb.append(getNext().toString() + joining));
+		next();
+		return sb.toString();
+	}
+
+	public Map<T, Node<T>> getNodeMap() {
+		Map<T, Node<T>> nodeMap = new HashMap<>();
+		IntStream.range(0, size()).forEach(i -> nodeMap.put(getNext(), currentNode));
+		return nodeMap;
 	}
 
 	/**
