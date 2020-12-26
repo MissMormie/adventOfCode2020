@@ -8,7 +8,7 @@ import java.util.stream.IntStream;
 public class Day23_CrabCups {
 
 	public static void main(String[] args) {
-//		System.out.println("answer A: " + runA(textInput()));
+		System.out.println("answer A: " + runA(textInput()));
 		long startTime = System.nanoTime();
 		System.out.println("answer B: " + runB(textInput()));
 		long endTime = System.nanoTime();
@@ -40,9 +40,9 @@ public class Day23_CrabCups {
 		Integer cup1 = cups.removeCurrent();
 		Integer cup2 = cups.removeCurrent();
 		Integer cup3 = cups.removeCurrent();
-		nodeMap.remove(cup1);
-		nodeMap.remove(cup2);
-		nodeMap.remove(cup3);
+//		nodeMap.remove(cup1);
+//		nodeMap.remove(cup2);
+//		nodeMap.remove(cup3);
 		cups.previous();
 
 		// The crab selects a destination cup: the cup with a label equal to the current cup's label minus one.
@@ -60,15 +60,22 @@ public class Day23_CrabCups {
 
 		// The crab places the cups it just picked up so that they are immediately clockwise of the destination cup.
 		// They keep the same order as when they were picked up.
-		cups.setCurrent(nodeMap.get(destination));
+
+		// often this is a number that's just be used. Stepping back 100 steps first is much faster than moving forward a million.
+		cups.previous(100);
+
+		while(!cups.getNext().equals(destination)) {
+		}
+
+//		cups.setCurrent(nodeMap.get(destination));
 
 		// Add the removed cups back to the circle, they also need to be updated in the node list.
 		cups.addObject(cup1);
-		nodeMap.put(cup1, cups.getNode());
+//		nodeMap.put(cup1, cups.getNode());
 		cups.addObject(cup2);
-		nodeMap.put(cup2, cups.getNode());
+//		nodeMap.put(cup2, cups.getNode());
 		cups.addObject(cup3);
-		nodeMap.put(cup3, cups.getNode());
+//		nodeMap.put(cup3, cups.getNode());
 
 		// The crab selects a new current cup: the cup which is immediately clockwise of the current cup.
 		cups.setCurrent(currentNode);
@@ -78,6 +85,11 @@ public class Day23_CrabCups {
 	public static Long runB(String input) {
 		CircularLinkedList<Integer> cups = new CircularLinkedList<>();
 		input.chars().forEach(c -> cups.addObject(c - 48));
+
+
+
+
+
 		IntStream.rangeClosed(10, 1_000_000).forEach(i -> {
 			cups.addObject(i);
 		});
@@ -85,9 +97,13 @@ public class Day23_CrabCups {
 
 		Map<Integer, CircularLinkedList<Integer>.Node<Integer>> nodeMap = cups.getNodeMap();
 
+
+		long startTime = System.nanoTime();
 		IntStream.range(0, 10_000_000).forEach(i -> {
-			if(i == 1364753) {
-				System.out.println("Asadgf");
+			if(i % 1_000 == 0) {
+				System.out.println("iteration: " + i);
+				long timeElapsed = System.nanoTime() - startTime;
+				System.out.println("Execution time in milliseconds : " + timeElapsed / 1000000);
 			}
 			move(cups, nodeMap);
 		});

@@ -17,13 +17,13 @@ class Day19_MonsterMessagesTest {
 				"3: 4 5 | 5 4\n" +
 				"4: \"a\"\n" +
 				"5: \"b\"";
-		input = "ababbb\n" +
+		input = "ababb\n" +
 				"bababa\n" +
-				"abbbab\n" +
-				"aaabbb\n" +
-				"aaaabbb";
+				"abbba\n" +
+				"aaabb\n" +
+				"aaaabb";
 		answer = 2;
-		assertEquals(answer, Day19_MonsterMessages.runA(validations, input), "validations = " + validations + " answer: " + answer);
+		assertEquals(answer, Day19_MonsterMessages2.runA(validations, input), "validations = " + validations + " answer: " + answer);
 
 	}
 

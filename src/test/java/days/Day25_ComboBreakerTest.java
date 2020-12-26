@@ -26,14 +26,4 @@ class Day25_ComboBreakerTest {
 
 	}
 
-
-	@Test
-	void runB() {
-		String input;
-		int answer;
-
-		input = "";
-		answer = 0;
-		assertEquals(answer, Day25_ComboBreaker.runB(input), "input = " + input + " answer: " + answer);
-	}
 }
