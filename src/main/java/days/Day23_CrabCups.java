@@ -1,16 +1,14 @@
 package days;
 
-import helpers.CircularLinkedList;
-
+import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.IntStream;
 
 public class Day23_CrabCups {
 
 	public static void main(String[] args) {
 		System.out.println("answer A: " + runA(textInput()));
 		long startTime = System.nanoTime();
-		System.out.println("answer B: " + runB(textInput()));
+		System.out.println("answer B: " + runB(textInput())); // 474747880250
 		long endTime = System.nanoTime();
 		long timeElapsed = endTime - startTime;
 
@@ -18,99 +16,83 @@ public class Day23_CrabCups {
 	}
 
 	public static String runA(String input) {
-		CircularLinkedList<Integer> cups = new CircularLinkedList<>();
-		input.chars().forEach(c -> cups.addObject(c - 48));
-		cups.next();
-		Map<Integer, CircularLinkedList<Integer>.Node<Integer>> nodeMap = cups.getNodeMap();
-
-		IntStream.range(0, 100).forEach(i -> move(cups, nodeMap));
-		while(cups.getCurrent() != 1) {
-			cups.next();
+		Map<Integer, Integer> cupMap = new HashMap<>(); // first int is number of cup, second is number of next cup.
+		for (int i = 0; i < input.length() - 1; i++) {
+			cupMap.put(input.charAt(i) - 48, input.charAt(i + 1) - 48);
 		}
-		cups.removeCurrent();
-		return cups.getStringFromList("");
-	}
+		// add last cup
+		cupMap.put(input.charAt(input.length() - 1) - 48, input.charAt(0) - 48);
 
-	public static void move(CircularLinkedList<Integer> cups, Map<Integer, CircularLinkedList<Integer>.Node<Integer>> nodeMap) {
-		CircularLinkedList<Integer>.Node<Integer> currentNode = cups.getNode();
+		playGame(cupMap, input.charAt(0) - 48, 100);
 
-		// The crab picks up the three cups that are immediately clockwise of the current cup.
-		// They are removed from the circle; cup spacing is adjusted as necessary to maintain the circle.
-		cups.next();
-		Integer cup1 = cups.removeCurrent();
-		Integer cup2 = cups.removeCurrent();
-		Integer cup3 = cups.removeCurrent();
-//		nodeMap.remove(cup1);
-//		nodeMap.remove(cup2);
-//		nodeMap.remove(cup3);
-		cups.previous();
-
-		// The crab selects a destination cup: the cup with a label equal to the current cup's label minus one.
-		// If this would select one of the cups that was just picked up, the crab will keep subtracting one until it
-		// finds a cup that wasn't just picked up. If at any point in this process the value goes below the lowest value
-		// on any cup's label, it wraps around to the highest value on any cup's label instead.
-		Integer destination = cups.getCurrent() -1;
-		while(destination < 1 || destination == cup1 || destination == cup2 || destination == cup3 || destination == cups.getCurrent()) {
-			if(destination < 1) {
-				destination = cups.size() + 3; // the three removed cups
-			} else {
-				destination -= 1;
-			}
+		Integer temp = 1;
+		StringBuilder sb = new StringBuilder();
+		for (int j = 0; j < cupMap.size() - 1; j++) {
+			temp = cupMap.get(temp);
+			sb.append(temp);
 		}
 
-		// The crab places the cups it just picked up so that they are immediately clockwise of the destination cup.
-		// They keep the same order as when they were picked up.
-
-		// often this is a number that's just be used. Stepping back 100 steps first is much faster than moving forward a million.
-		cups.previous(100);
-
-		while(!cups.getNext().equals(destination)) {
-		}
-
-//		cups.setCurrent(nodeMap.get(destination));
-
-		// Add the removed cups back to the circle, they also need to be updated in the node list.
-		cups.addObject(cup1);
-//		nodeMap.put(cup1, cups.getNode());
-		cups.addObject(cup2);
-//		nodeMap.put(cup2, cups.getNode());
-		cups.addObject(cup3);
-//		nodeMap.put(cup3, cups.getNode());
-
-		// The crab selects a new current cup: the cup which is immediately clockwise of the current cup.
-		cups.setCurrent(currentNode);
-		cups.next();
+		return sb.toString();
 	}
 
 	public static Long runB(String input) {
-		CircularLinkedList<Integer> cups = new CircularLinkedList<>();
-		input.chars().forEach(c -> cups.addObject(c - 48));
+		Map<Integer, Integer> cupMap = new HashMap<>(); // first int is number of cup, second is number of next cup.
 
-
-
-
-
-		IntStream.rangeClosed(10, 1_000_000).forEach(i -> {
-			cups.addObject(i);
-		});
-		cups.next(); // set to first cup
-
-		Map<Integer, CircularLinkedList<Integer>.Node<Integer>> nodeMap = cups.getNodeMap();
-
-
-		long startTime = System.nanoTime();
-		IntStream.range(0, 10_000_000).forEach(i -> {
-			if(i % 1_000 == 0) {
-				System.out.println("iteration: " + i);
-				long timeElapsed = System.nanoTime() - startTime;
-				System.out.println("Execution time in milliseconds : " + timeElapsed / 1000000);
-			}
-			move(cups, nodeMap);
-		});
-		while(cups.getCurrent() != 1) {
-			cups.next();
+		// Add the numbered cups
+		for (int i = 0; i < input.length() - 1; i++) {
+			cupMap.put(input.charAt(i) - 48, input.charAt(i + 1) - 48);
 		}
-		return cups.getNext() * 1l * cups.getNext();
+		// add intermediate  cup
+		cupMap.put(input.charAt(input.length() - 1) - 48, input.length() + 1);
+
+		// fill up cups to 1 million
+		for (int i = input.length() + 1; i <= 1_000_000 - 1; i++) {
+			cupMap.put(i, i + 1);
+		}
+
+		// update last cup
+		cupMap.put(1_000_000, input.charAt(0) - 48);
+
+		playGame(cupMap, input.charAt(0) - 48, 10_000_000);
+
+		Integer nextToOne = cupMap.get(1);
+		return 1l * nextToOne * cupMap.get(nextToOne);
+	}
+
+	private static void playGame(Map<Integer, Integer> cupMap, Integer currentCup, long rounds) {
+		for (int i = 0; i < rounds; i++) {
+
+			// The crab picks up the three cups that are immediately clockwise of the current cup.
+			// They are removed from the circle; cup spacing is adjusted as necessary to maintain the circle.
+			Integer cup1 = cupMap.get(currentCup);
+			Integer cup2 = cupMap.get(cup1);
+			Integer cup3 = cupMap.get(cup2);
+
+			// set next cup for the current cup as the 4th cup from the current.
+			cupMap.put(currentCup, cupMap.get(cup3));
+
+			// The crab selects a destination cup: the cup with a label equal to the current cup's label minus one.
+			// If this would select one of the cups that was just picked up, the crab will keep subtracting one until it
+			// finds a cup that wasn't just picked up. If at any point in this process the value goes below the lowest value
+			// on any cup's label, it wraps around to the highest value on any cup's label instead.
+			Integer destination = currentCup - 1;
+			while (destination < 1 || destination.equals(cup1) || destination.equals(cup2) || destination.equals(cup3) || destination.equals(currentCup)) {
+				if (destination < 1) {
+					destination = cupMap.size(); // the three removed cups
+				} else {
+					destination -= 1;
+				}
+			}
+
+			// The crab places the cups it just picked up so that they are immediately clockwise of the destination cup.
+			// They keep the same order as when they were picked up.
+			Integer afterDestination = cupMap.get(destination);
+			cupMap.put(destination, cup1);
+			cupMap.put(cup3, afterDestination);
+
+			// The crab selects a new current cup: the cup which is immediately clockwise of the current cup.
+			currentCup = cupMap.get(currentCup);
+		}
 	}
 
 	private static String textInput() {
