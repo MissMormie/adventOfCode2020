@@ -1,7 +1,5 @@
 package helpers;
 
-import days.Day0;
-
 public class TestBoilerPlate {
 //
 //	@Test
