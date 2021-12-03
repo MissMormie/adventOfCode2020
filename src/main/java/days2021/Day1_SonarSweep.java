@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class day1_SonarSweep {
+public class Day1_SonarSweep {
 	public static void main(String[] args) {
 		System.out.println("answer A: " + runA(textInput()));
 		System.out.println("answer B: " + runB(textInput()));
