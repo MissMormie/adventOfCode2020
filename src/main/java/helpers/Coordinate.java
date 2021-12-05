@@ -41,6 +41,12 @@ public class Coordinate implements Comparable<Coordinate>{
         this.y = y;
     }
 
+    public Coordinate(String xCommaY) {
+        String[] split = xCommaY.split(",");
+        this.x = Integer.parseInt(split[0]);
+        this.y = Integer.parseInt(split[1]);
+    }
+
     public int getIntValue() {
         return intValue;
     }
@@ -106,13 +112,21 @@ public class Coordinate implements Comparable<Coordinate>{
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if(!(obj instanceof Coordinate)) {
-            return false;
-        }
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-        Coordinate coord = (Coordinate) obj;
-        return coord.x == x && coord.y == y;
+        Coordinate that = (Coordinate) o;
+
+        if (x != that.x) return false;
+        return y == that.y;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = x;
+        result = 31 * result + y;
+        return result;
     }
 
     @Override
