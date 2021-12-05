@@ -6,6 +6,7 @@ import helpers.Line2D;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Stream;
 
 public class Day5_HydrothermalVenture {
 	public static void main(String[] args) {
@@ -14,10 +15,20 @@ public class Day5_HydrothermalVenture {
 	}
 
 	public static long runA(String input) {
+		return countCrossingVents(input, false);
+	}
+
+	public static long runB(String input) {
+		return countCrossingVents(input, true);
+	}
+
+	private static long countCrossingVents(String input, boolean includeDiagonals) {
 		Map<Coordinate, Integer> coordinateCountMap = new HashMap<>();
-		Arrays.stream(input.split("\n")).map(Line2D::new)
-				.filter(Line2D::isHorizontalOrVertical)
-				.forEach(line2D -> addCoordinatesToMap(line2D, coordinateCountMap));
+		Stream<Line2D> line2DStream = Arrays.stream(input.split("\n")).map(Line2D::new);
+		if(!includeDiagonals) {
+			 line2DStream = line2DStream.filter(Line2D::isHorizontalOrVertical);
+		}
+		line2DStream.forEach(line2D -> addCoordinatesToMap(line2D, coordinateCountMap));
 
 		return coordinateCountMap.entrySet().stream()
 				.filter(entry -> entry.getValue() > 1)
@@ -32,17 +43,6 @@ public class Day5_HydrothermalVenture {
 				coordinateCountMap.put(coord, 1);
 			}
 		});
-
-	}
-
-	public static long runB(String input) {
-		Map<Coordinate, Integer> coordinateCountMap = new HashMap<>();
-		Arrays.stream(input.split("\n")).map(Line2D::new)
-				.forEach(line2D -> addCoordinatesToMap(line2D, coordinateCountMap));
-
-		return coordinateCountMap.entrySet().stream()
-				.filter(entry -> entry.getValue() > 1)
-				.count();
 	}
 
 	private static String textInput() {
