@@ -1,7 +1,7 @@
 package helpers;
 
 public class TestBoilerPlate {
-//
+
 //	@Test
 //	void runA() {
 //		String input;
@@ -9,7 +9,7 @@ public class TestBoilerPlate {
 //
 //		input = "";
 //		answer = 0;
-//		assertEquals(answer, Day0.runA(input), "input = " + input + " answer: " + answer);
+//		assertEquals(answer, Day0.runA(Arrays.stream(input.split("\n"))), "input = " + input + " answer: " + answer);
 //
 //	}
 //
@@ -21,6 +21,6 @@ public class TestBoilerPlate {
 //
 //		input = "";
 //		answer = 0;
-//		assertEquals(answer, Day0.runB(input), "input = " + input + " answer: " + answer);
+//		assertEquals(answer, Day0.runB(Arrays.stream(input.split("\n"))), "input = " + input + " answer: " + answer);
 //	}
 }

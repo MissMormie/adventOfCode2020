@@ -5,7 +5,6 @@ import helpers.InputProvider;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.BinaryOperator;
 import java.util.function.IntBinaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;

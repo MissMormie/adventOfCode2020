@@ -1,20 +1,23 @@
 package helpers;
 
-public class boilerplate {
+import java.io.IOException;
+import java.util.stream.Stream;
 
-    public static void main(String[] args) {
-        System.out.println("answer A: " + runA(textInput()));
-        System.out.println("answer B: " + runB(textInput()));
+public class boilerplate {
+    public static int day = 0;
+    public static int year = 2021;
+
+    public static void main(String[] args) throws IOException {
+        System.out.println("answer A: " + runA(InputProvider.getInputFor(year, day)));
+        System.out.println("answer B: " + runB(InputProvider.getInputFor(year, day)));
     }
 
-    public static int runA(String input) {
-        //		Arrays.stream(input.split("\n"))
+    public static int runA(Stream<String> input) {
         return 0;
     }
 
 
-    public static int runB(String input) {
-        //		Arrays.stream(input.split("\n"))
+    public static int runB(Stream<String> input) {
         return 0;
     }
 
