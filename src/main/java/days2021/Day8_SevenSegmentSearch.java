@@ -16,7 +16,6 @@ import java.util.stream.Stream;
 
 public class Day8_SevenSegmentSearch {
 	public static int day = 8;
-
 	public static int year = 2021;
 
 	public static void main(String[] args) throws IOException {
@@ -61,7 +60,6 @@ public class Day8_SevenSegmentSearch {
 		numbers.put(7, countsMap.get(3).get(0)); // combination for 7
 		numbers.put(8, countsMap.get(7).get(0)); // combination for 8
 		numbers.put(4, countsMap.get(4).get(0)); // combination for 4
-// 2, 3, 5
 
 		// 6 does not contains both values from 1 and has 6 chars total.
 		String string6 = countsMap.get(6).stream().filter(str -> {
@@ -98,7 +96,6 @@ public class Day8_SevenSegmentSearch {
 		numbers.put(5,string5);
 		countsMap.get(5).remove(string5);
 
-
 		// 2 has 5 chars and is left
 		numbers.put(2, countsMap.get(5).get(0));
 
@@ -109,9 +106,9 @@ public class Day8_SevenSegmentSearch {
 		Arrays.stream(parts).map(toSortedString())
 				.map(input -> numbers.entrySet().stream()
 						.filter(entry -> entry.getValue().equals(input)).findAny().get().getKey())
-				.forEach(num -> sb.append(num));
-		return Integer.parseInt(sb.toString());
+				.forEach(sb::append);
 
+		return Integer.parseInt(sb.toString());
 	}
 
 	private static Function<String, String> toSortedString() {

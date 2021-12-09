@@ -1,5 +1,7 @@
 package helpers;
 
+import days2021.Day9_SmokeBasin;
+
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -76,11 +78,11 @@ public class Coordinate implements Comparable<Coordinate>{
         return coordinate;
     }
 
-    public void saveAdjacent(Map<String,Coordinate> coordinateMap) {
+    public void getAdjacent(Map<String,Coordinate> coordinateMap) {
         adjacentCoords = new ArrayList();
 
         for(int x = -1; x < 2; x++ ) {
-            for(int y = -1; y < 2; y++ ) { // loop adjecent acres
+            for(int y = -1; y < 2; y++ ) { // loop adjacent acres
                 String coords = makeCoordString(this.x - x, this.y -y);
                 if(!coords.equals(getCoords())) {
                     Coordinate coord = coordinateMap.get(coords);
@@ -90,6 +92,22 @@ public class Coordinate implements Comparable<Coordinate>{
                 }
             }
         }
+    }
+
+    public List<Coordinate> getOctagonalAdjacentCoords(Map<String, Day9_SmokeBasin.LavaTube> coordinateMap) {
+        List<String> coordString = new ArrayList<>();
+        coordString.add(makeCoordString(x-1, y));
+        coordString.add(makeCoordString(x+1, y));
+        coordString.add(makeCoordString(x, y-1));
+        coordString.add(makeCoordString(x, y+1));
+
+        List<Coordinate> octagonalAdjacentCoords = new ArrayList<>();
+        for(String singleCoordString : coordString) {
+            if(coordinateMap.containsKey(singleCoordString)) {
+                octagonalAdjacentCoords.add(coordinateMap.get(singleCoordString));
+            }
+        }
+        return octagonalAdjacentCoords;
     }
 
     public static String makeCoordString(int x, int y) {

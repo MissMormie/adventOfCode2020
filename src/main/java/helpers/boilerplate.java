@@ -21,9 +21,4 @@ public class boilerplate {
         return 0;
     }
 
-    private static String textInput() {
-        return "";
-
-    }
-
 }
