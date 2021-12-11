@@ -58,12 +58,10 @@ public class Day11_DumboOctopus {
 		octopi.forEach(octopus -> octopus.getSurroundingOctopi(coordMap));
 
 		int steps = 0;
-		long numResetThisStep = 0;
 		do {
 			steps++;
 			octopi.forEach(Octopus::increaseEnergy);
-			numResetThisStep = octopi.stream().filter(Octopus::resetEnergyIfNeeded).count();
-		} while(numResetThisStep < 100);
+		} while(octopi.stream().filter(Octopus::resetEnergyIfNeeded).count() < 100);
 
 		return steps;
 	}
