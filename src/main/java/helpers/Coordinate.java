@@ -78,7 +78,7 @@ public class Coordinate implements Comparable<Coordinate>{
         return coordinate;
     }
 
-    public void getAdjacent(Map<String,Coordinate> coordinateMap) {
+    public void getAdjacent(Map<String,? extends Coordinate> coordinateMap) {
         adjacentCoords = new ArrayList();
 
         for(int x = -1; x < 2; x++ ) {
