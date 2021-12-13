@@ -154,4 +154,34 @@ public class Coordinate implements Comparable<Coordinate>{
         }
         return this.y - o.y;
     }
+
+    public static void printMap(Map<String, Coordinate> coordinateMap) {
+        Integer minX, maxX, minY, maxY;
+        minX = maxX = minY = maxY = null;
+        for(Map.Entry<String, Coordinate> entry: coordinateMap.entrySet()) {
+            Coordinate coordinate = entry.getValue();
+            if(minX == null) {
+                minX = maxX = coordinate.x;
+                minY = maxY = coordinate.y;
+            }
+            minX = coordinate.x < minX ? coordinate.x : minX;
+            maxX = coordinate.x > maxX ? coordinate.x : maxX;
+            minY = coordinate.y < minY ? coordinate.y : minY;
+            maxY = coordinate.y > maxY ? coordinate.y : maxY;
+        }
+
+        for(int y = minY; y <= maxY; y++) {
+            StringBuilder sb = new StringBuilder();
+            for (int x = minX; x <= maxX; x++) {
+                if(coordinateMap.containsKey(Coordinate.makeCoordString(x,y))) {
+                    sb.append("#");
+                } else {
+                    sb.append(" ");
+                }
+            }
+            System.out.println(sb.toString());
+        }
+        System.out.println("------------------------------");
+
+    }
 }
