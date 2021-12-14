@@ -45,6 +45,13 @@ public class CircularLinkedList<T> {
 		return this;
 	}
 
+	public CircularLinkedList<T> addBefore(T object) {
+		previous();
+		addObject(object);
+		next();
+		return this;
+	}
+
 	public CircularLinkedList<T> clone() {
 		CircularLinkedList<T> clonedList = new CircularLinkedList<>();
 		IntStream.range(0, numNodes).forEach(i -> clonedList.addObject(getNext()));

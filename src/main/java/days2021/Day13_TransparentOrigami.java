@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Day13_TransparentOrigami {
@@ -56,15 +57,15 @@ public class Day13_TransparentOrigami {
 	private static void foldMap(Map<String, Coordinate> coordMap, String foldLine) {
 		int fold = Integer.parseInt(foldLine.substring(foldLine.indexOf("=") + 1));
 		if (foldLine.contains("x")) {
-			coordMap.entrySet().stream().filter(entry -> entry.getValue().x > fold).map(Map.Entry::getValue)
-					.forEach(coord -> {
+			List<Coordinate> collect = coordMap.entrySet().stream().filter(entry -> entry.getValue().x > fold).map(Map.Entry::getValue).collect(Collectors.toList());
+			collect.forEach(coord -> {
 						coordMap.remove(coord.getCoords());
 						coord.x = fold - (coord.x - fold);
 						coordMap.put(coord.getCoords(), coord);
 					});
 		} else {
-			coordMap.entrySet().stream().filter(entry -> entry.getValue().y > fold).map(Map.Entry::getValue)
-					.forEach(coord -> {
+			List<Coordinate> collect = coordMap.entrySet().stream().filter(entry -> entry.getValue().y > fold).map(Map.Entry::getValue).collect(Collectors.toList());
+			collect.forEach(coord -> {
 						coordMap.remove(coord.getCoords());
 						coord.y = fold - (coord.y - fold);
 						coordMap.put(coord.getCoords(), coord);
