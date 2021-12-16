@@ -40,7 +40,7 @@ public class Day13_TransparentOrigami {
 			foldMap(coordMap, foldLine);
 		}
 
-		Coordinate.printMap(coordMap);
+		Coordinate.printHashForCoordinate(coordMap);
 	}
 
 	private static void createCoordMapAndFoldList(Stream<String> input, List<String> folds, Map<String, Coordinate> coordMap) {

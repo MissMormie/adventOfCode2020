@@ -1,7 +1,5 @@
 package helpers;
 
-import days2021.Day9_SmokeBasin;
-
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -94,7 +92,7 @@ public class Coordinate implements Comparable<Coordinate>{
         }
     }
 
-    public List<Coordinate> getOctagonalAdjacentCoords(Map<String, Day9_SmokeBasin.LavaTube> coordinateMap) {
+    public List<? extends Coordinate> getOctagonalAdjacentCoords(Map<String, ? extends Coordinate> coordinateMap) {
         List<String> coordString = new ArrayList<>();
         coordString.add(makeCoordString(x-1, y));
         coordString.add(makeCoordString(x+1, y));
@@ -155,10 +153,10 @@ public class Coordinate implements Comparable<Coordinate>{
         return this.y - o.y;
     }
 
-    public static void printMap(Map<String, Coordinate> coordinateMap) {
+    public static void printHashForCoordinate(Map<String, ? extends Coordinate> coordinateMap) {
         Integer minX, maxX, minY, maxY;
         minX = maxX = minY = maxY = null;
-        for(Map.Entry<String, Coordinate> entry: coordinateMap.entrySet()) {
+        for(Map.Entry<String, ? extends Coordinate> entry: coordinateMap.entrySet()) {
             Coordinate coordinate = entry.getValue();
             if(minX == null) {
                 minX = maxX = coordinate.x;

@@ -101,7 +101,7 @@ public class Day9_SmokeBasin {
 		}
 
 		public int getRisk(Map<String, LavaTube> lavaTubeMap) {
-			List<Coordinate> octagonalAdjacentCoords = getOctagonalAdjacentCoords(lavaTubeMap);
+			List<? extends Coordinate> octagonalAdjacentCoords = getOctagonalAdjacentCoords(lavaTubeMap);
 			return octagonalAdjacentCoords.stream().filter(coordinate -> coordinate.intValue <= this.intValue).findAny()
 					.map(optional -> 0)
 					.orElse(intValue +1);
