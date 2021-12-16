@@ -51,12 +51,10 @@ public class Day15_Chiton {
 			return caveVertex;
 		}).collect(Collectors.toList());
 
-		List<CaveVertex> closedVertices = new ArrayList<>();
 		while(!caveVertices.isEmpty()) {
 			caveVertices.sort(CaveVertex.distanceComparator);
 			CaveVertex caveVertex = caveVertices.remove(0);
 			caveVertex.updateNeighbours();
-			closedVertices.add(caveVertex);
 		}
 
 		return end.shortestDistance;
@@ -75,9 +73,7 @@ public class Day15_Chiton {
 				int difficultyIncrease = x / collect.size() + y / chars.length;
 				CaveVertex caveVertex = new CaveVertex(x, y, chars[y%chars.length], difficultyIncrease);
 				caveVertexMap.put(caveVertex.getCoords(), caveVertex);
-//				System.out.print(caveVertex.difficulty);
 			}
-//			System.out.println("");
 		}
 
 		return findShortestPath(caveVertexMap, maxX, maxY);
@@ -86,7 +82,6 @@ public class Day15_Chiton {
 
 	public static class CaveVertex extends Coordinate {
 		int difficulty;
-		CaveVertex previousVertex;
 		int shortestDistance = Integer.MAX_VALUE;
 		boolean visited = false;
 		List<CaveVertex> adjacentCavern = new ArrayList<>();
@@ -113,15 +108,10 @@ public class Day15_Chiton {
 		}
 
 		public void updateNeighbours() {
-			adjacentCavern.stream().forEach(coord -> ((CaveVertex) coord).updateDistance(shortestDistance));
+			adjacentCavern.forEach(coord -> coord.updateDistance(shortestDistance));
 			visited = true;
 		}
 
-		public static Comparator<CaveVertex> distanceComparator = new Comparator<CaveVertex>() {
-			@Override
-			public int compare(CaveVertex o1, CaveVertex o2) {
-				return o1.shortestDistance - o2.shortestDistance;
-			}
-		};
+		public static Comparator<CaveVertex> distanceComparator = Comparator.comparingInt(o -> o.shortestDistance);
 	}
 }
