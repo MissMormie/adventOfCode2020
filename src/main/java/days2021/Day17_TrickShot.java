@@ -54,7 +54,6 @@ public class Day17_TrickShot {
 		int minX = Integer.parseInt(split[1]);
 		int maxX = Integer.parseInt(split[2]);
 
-
 		// Get all dy's that hit the target zone and at which time(s).
 		List<Coordinate> dy_tList = new ArrayList<>();
 
