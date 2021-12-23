@@ -45,6 +45,19 @@ public class CircularLinkedList<T> {
 		return this;
 	}
 
+	public CircularLinkedList<T> addAtEnd(T object) {
+		moveToFirst();
+		previous();
+		addObject(object);
+		return this;
+	}
+
+	public CircularLinkedList<T> addAsFirst(T object) {
+		addAtEnd(object);
+		firstNode = currentNode;
+		return this;
+	}
+
 	public CircularLinkedList<T> addBefore(T object) {
 		previous();
 		addObject(object);
@@ -102,6 +115,14 @@ public class CircularLinkedList<T> {
 		return this;
 	}
 
+	public void moveToEnd() {
+		moveToFirst();
+		previous();
+	}
+
+	public boolean isLastNode() {
+		return currentNode.getNextNode() == firstNode;
+	}
 
 	public CircularLinkedList<T> previous() {
 		if(currentNode == null) {
@@ -160,10 +181,6 @@ public class CircularLinkedList<T> {
 			firstNode = null;
 			numNodes--;
 			return tempNode.get();
-		}
-		if((int) currentNode.get() == 940962) {
-
-			System.out.println("Issues");
 		}
 
 		if(currentNode == firstNode) {
