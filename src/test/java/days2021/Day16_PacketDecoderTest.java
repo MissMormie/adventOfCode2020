@@ -31,15 +31,47 @@ class Day16_PacketDecoderTest {
 		assertEquals(answer, Day16_PacketDecoder.runA(Arrays.stream(input.split("\n"))), "input = " + input + " answer: " + answer);
 
 	}
-//
-//
-//	@Test
-//	void runB() {
-//		String input;
-//		int answer;
-//
-//		input = "";
-//		answer = 0;
-//		assertEquals(answer, Day0.runB(Arrays.stream(input.split("\n"))), "input = " + input + " answer: " + answer);
-//	}
+
+
+	@Test
+	void runB() {
+		String input;
+		int answer;
+
+
+		input = "C200B40A82";
+		answer = 3;
+		assertEquals(answer, Day16_PacketDecoder.runB(Arrays.stream(input.split("\n"))), "input = " + input + " answer: " + answer);
+
+		input = "04005AC33890";
+		answer = 54;
+		assertEquals(answer, Day16_PacketDecoder.runB(Arrays.stream(input.split("\n"))), "input = " + input + " answer: " + answer);
+
+		input = "880086C3E88112";
+		answer = 7;
+		assertEquals(answer, Day16_PacketDecoder.runB(Arrays.stream(input.split("\n"))), "input = " + input + " answer: " + answer);
+
+		input = "CE00C43D881120";
+		answer = 9;
+		assertEquals(answer, Day16_PacketDecoder.runB(Arrays.stream(input.split("\n"))), "input = " + input + " answer: " + answer);
+
+		input = "D8005AC2A8F0";
+		answer = 1;
+		assertEquals(answer, Day16_PacketDecoder.runB(Arrays.stream(input.split("\n"))), "input = " + input + " answer: " + answer);
+
+		input = "F600BC2D8F";
+		answer = 0;
+		assertEquals(answer, Day16_PacketDecoder.runB(Arrays.stream(input.split("\n"))), "input = " + input + " answer: " + answer);
+
+
+		input = "9C005AC2F8F0";
+		answer = 0;
+		assertEquals(answer, Day16_PacketDecoder.runB(Arrays.stream(input.split("\n"))), "input = " + input + " answer: " + answer);
+
+		input = "9C0141080250320F1802104A08";
+		answer = 1;
+		assertEquals(answer, Day16_PacketDecoder.runB(Arrays.stream(input.split("\n"))), "input = " + input + " answer: " + answer);
+
+
+	}
 }
