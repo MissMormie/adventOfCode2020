@@ -58,7 +58,6 @@ public class Day16_PacketDecoder {
 					sb.append(bitGroup.substring(1));
 				}
 				long l = Long.parseLong(sb.toString(), 2);
-				System.out.println(l);
 				return l;
 			default :
 				int length = removeCharsFromList(characters, 1).equals("0") ? 15 : 11;
@@ -84,8 +83,6 @@ public class Day16_PacketDecoder {
 		}
 		throw new RuntimeException("Shouldn't come here");
 	}
-
-
 
 	private static int extractPacketsA(String s) {
 		LinkedList<Character> characters = new LinkedList<>();
