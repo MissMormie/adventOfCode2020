@@ -3,9 +3,7 @@ package days2021;
 import helpers.Coordinate;
 import helpers.InputProvider;
 
-import java.awt.*;
 import java.io.IOException;
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -100,6 +98,9 @@ public class Day23_Amphipod {
 		Map<String, List<Location>> stationsMap = new HashMap<>();
 
 		public void doSteps(Map<String, String> amphipodMap, int energy) {
+			if(energy > minEnergy) {
+				return;
+			}
 			Map<String, Boolean> availabilityMap = getAvailability(amphipodMap);
 			Map<String, Set<Location>> possibleMoves = amphipodMap.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, entry -> getPossibleMoves(amphipodMap, entry, availabilityMap)));
 			long options = possibleMoves.values().stream().flatMap(Collection::stream).count();
@@ -257,22 +258,6 @@ public class Day23_Amphipod {
 				return amphipodMap.get(location.getCoords()).equals(type);
 			}
 			return true;
-		}
-	}
-
-	public static class Amphipod {
-		String type;
-		int energyPerStep;
-
-
-		public Amphipod(Character type) {
-			this.type = "" + type;
-			switch (this.type) {
-				case "A": energyPerStep = 1; break;
-				case "B": energyPerStep = 10; break;
-				case "C": energyPerStep = 100; break;
-				case "D": energyPerStep = 1000; break;
-			}
 		}
 	}
 

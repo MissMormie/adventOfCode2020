@@ -5,7 +5,7 @@ import java.util.stream.Stream;
 
 public class boilerplate {
     public static int day = 0;
-    public static int year = 2021;
+    public static int year = 2022;
 
     public static void main(String[] args) throws IOException {
         System.out.println("answer A: " + runA(InputProvider.getInputFor(year, day)));

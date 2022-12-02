@@ -43,6 +43,7 @@ public class InputProvider {
 			URL url = new URL("https://adventofcode.com/"+ year + "/day/" + day+ "/input");
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			con.setRequestProperty("Cookie", "session=" + getSession() );
+			con.setRequestProperty("User-Agent", "https://github.com/MissMormie/adventOfCode2020/blob/main/src/main/java/helpers/InputProvider.java ");
 			con.setRequestMethod("GET");
 			String responseMessage = con.getResponseMessage();
 			// read response

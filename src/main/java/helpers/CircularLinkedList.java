@@ -26,7 +26,7 @@ public class CircularLinkedList<T> {
 	public CircularLinkedList<T> addObject(T object) {
 		numNodes++;
 
-		if(currentNode == null) {
+		if (currentNode == null) {
 			addFirstObject(object);
 			return this;
 		}

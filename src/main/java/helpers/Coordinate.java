@@ -180,6 +180,5 @@ public class Coordinate implements Comparable<Coordinate>{
             System.out.println(sb.toString());
         }
         System.out.println("------------------------------");
-
     }
 }
