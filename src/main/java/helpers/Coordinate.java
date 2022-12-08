@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 public class Coordinate implements Comparable<Coordinate>{
     public int x;
@@ -154,6 +155,25 @@ public class Coordinate implements Comparable<Coordinate>{
     }
 
     public static void printHashForCoordinate(Map<String, ? extends Coordinate> coordinateMap) {
+        printValuesForCoordinateMap(coordinateMap, coord -> "#");
+    }
+
+    public static void printIntValuesForCoordinate(Map<String, ? extends Coordinate> coordinateMap) {
+        printValuesForCoordinateMap(coordinateMap, coord -> "" + coord.intValue);
+    }
+
+    public static void printValuesForCoordinateIfBooleanTrue(Map<String, ? extends Coordinate> coordinateMap) {
+        printValuesForCoordinateMap(coordinateMap, coord -> {
+            if(coord.booleanValue) {
+                return "" + coord.intValue;
+            } else {
+                return " ";
+            }
+        });
+    }
+
+
+    public static void printValuesForCoordinateMap(Map<String, ? extends Coordinate> coordinateMap, Function<Coordinate, String> function) {
         Integer minX, maxX, minY, maxY;
         minX = maxX = minY = maxY = null;
         for(Map.Entry<String, ? extends Coordinate> entry: coordinateMap.entrySet()) {
@@ -172,12 +192,13 @@ public class Coordinate implements Comparable<Coordinate>{
             StringBuilder sb = new StringBuilder();
             for (int x = minX; x <= maxX; x++) {
                 if(coordinateMap.containsKey(Coordinate.makeCoordString(x,y))) {
-                    sb.append("#");
+                    Coordinate coordinate = coordinateMap.get(Coordinate.makeCoordString(x, y));
+                    sb.append(function.apply(coordinate));
                 } else {
                     sb.append(" ");
                 }
             }
-            System.out.println(sb.toString());
+            System.out.println(sb);
         }
         System.out.println("------------------------------");
     }
