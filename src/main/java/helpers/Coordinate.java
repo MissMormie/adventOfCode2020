@@ -195,7 +195,7 @@ public class Coordinate implements Comparable<Coordinate>{
                     Coordinate coordinate = coordinateMap.get(Coordinate.makeCoordString(x, y));
                     sb.append(function.apply(coordinate));
                 } else {
-                    sb.append(" ");
+                    sb.append(".");
                 }
             }
             System.out.println(sb);
