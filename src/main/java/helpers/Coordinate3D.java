@@ -9,10 +9,17 @@ public class Coordinate3D extends Coordinate {
     int z;
 
     List<String> surroundingCoords;
+    List<String> octagonalSurroundingCoords;
 
     public Coordinate3D(int x, int y, int z) {
         super(x, y);
         this.z = z;
+    }
+
+    public Coordinate3D(String xCommaYCommaZ) {
+        super(xCommaYCommaZ);
+        String[] split = xCommaYCommaZ.split(",");
+        this.z = Integer.parseInt(split[2]);
     }
 
     public int getManhattanDistance(Coordinate3D coords) {
@@ -36,6 +43,22 @@ public class Coordinate3D extends Coordinate {
 
     public static String makeCoordString(int x, int y, int z) {
         return "" + x + "," + y + "," + z;
+    }
+
+    /**
+     * Gets the coord strings for the six sides that octagonally surround the coord
+     */
+    public List<String> getOctagonalSurroundingCoords() {
+        if(this.octagonalSurroundingCoords == null) {
+            octagonalSurroundingCoords = new ArrayList<>();
+            octagonalSurroundingCoords.add(makeCoordString(x, y, z-1));
+            octagonalSurroundingCoords.add(makeCoordString(x, y, z+1));
+            octagonalSurroundingCoords.add(makeCoordString(x, y -1, z));
+            octagonalSurroundingCoords.add(makeCoordString(x, y +1, z));
+            octagonalSurroundingCoords.add(makeCoordString(x -1, y, z));
+            octagonalSurroundingCoords.add(makeCoordString(x +1, y, z));
+        }
+        return octagonalSurroundingCoords;
     }
 
     public List<String> getSurroundingCoords() {

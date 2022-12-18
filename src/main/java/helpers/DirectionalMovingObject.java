@@ -79,6 +79,8 @@ public class DirectionalMovingObject {
 		direction = directions[newDirection];
 	}
 
+
+
 	public enum Direction {
 		LEFT, UP, RIGHT, DOWN;
 

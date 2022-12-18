@@ -93,6 +93,12 @@ public class Coordinate implements Comparable<Coordinate>{
         }
     }
 
+    public String getCoordStringBelow() {
+        return makeCoordString(this.x, this.y + 1);
+    }
+
+
+
     public List<? extends Coordinate> getOctagonalAdjacentCoords(Map<String, ? extends Coordinate> coordinateMap) {
         List<String> coordString = new ArrayList<>();
         coordString.add(makeCoordString(x-1, y));
@@ -158,6 +164,10 @@ public class Coordinate implements Comparable<Coordinate>{
         printValuesForCoordinateMap(coordinateMap, coord -> "#");
     }
 
+    public static void printHashForCoordinateRightWayUp(Map<String, ? extends Coordinate> coordinateMap) {
+        printValuesForCoordinateMapRightWayUp(coordinateMap, coord -> "#");
+    }
+
     public static void printIntValuesForCoordinate(Map<String, ? extends Coordinate> coordinateMap) {
         printValuesForCoordinateMap(coordinateMap, coord -> "" + coord.intValue);
     }
@@ -202,4 +212,35 @@ public class Coordinate implements Comparable<Coordinate>{
         }
         System.out.println("------------------------------");
     }
+
+    public static void printValuesForCoordinateMapRightWayUp(Map<String, ? extends Coordinate> coordinateMap, Function<Coordinate, String> function) {
+        Integer minX, maxX, minY, maxY;
+        minX = maxX = minY = maxY = null;
+        for(Map.Entry<String, ? extends Coordinate> entry: coordinateMap.entrySet()) {
+            Coordinate coordinate = entry.getValue();
+            if(minX == null) {
+                minX = maxX = coordinate.x;
+                minY = maxY = coordinate.y;
+            }
+            minX = coordinate.x < minX ? coordinate.x : minX;
+            maxX = coordinate.x > maxX ? coordinate.x : maxX;
+            minY = coordinate.y < minY ? coordinate.y : minY;
+            maxY = coordinate.y > maxY ? coordinate.y : maxY;
+        }
+
+        for(int y = maxY; y >= minY; y--) {
+            StringBuilder sb = new StringBuilder();
+            for (int x = minX; x <= maxX; x++) {
+                if(coordinateMap.containsKey(Coordinate.makeCoordString(x,y))) {
+                    Coordinate coordinate = coordinateMap.get(Coordinate.makeCoordString(x, y));
+                    sb.append(function.apply(coordinate));
+                } else {
+                    sb.append(".");
+                }
+            }
+            System.out.println(sb);
+        }
+        System.out.println("------------------------------");
+    }
+
 }
