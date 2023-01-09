@@ -62,7 +62,6 @@ public class Day23_UnstableDiffusion {
 			maxY = coordinate.y > maxY ? coordinate.y : maxY;
 		}
 
-
 		int groundTiles = (maxX - minX) * (maxY - minY);
 
 		return groundTiles;
