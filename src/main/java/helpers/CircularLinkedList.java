@@ -156,8 +156,9 @@ public class CircularLinkedList<T> {
 		return getCurrent();
 	}
 
-	public void moveToFirst() {
+	public CircularLinkedList<T> moveToFirst() {
 		currentNode = firstNode;
+		return this;
 	}
 
 	public T getAndMoveToFirst() {

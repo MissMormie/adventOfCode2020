@@ -28,13 +28,13 @@ public class DirectionalMovingObject {
 
 	public void move() {
 		if (direction == Direction.UP) {
-			coordinate.y++;
-		} else if (direction == Direction.DOWN) {
 			coordinate.y--;
+		} else if (direction == Direction.DOWN) {
+			coordinate.y++;
 		} else if (direction == Direction.RIGHT) {
-			coordinate.x--;
-		} else if (direction == Direction.LEFT) {
 			coordinate.x++;
+		} else if (direction == Direction.LEFT) {
+			coordinate.x--;
 		}
 
 		// Save new coordinate to path.
@@ -86,10 +86,10 @@ public class DirectionalMovingObject {
 
 		public static Direction getDirection(String direction) {
 			if ("R".equals(direction)) {
-				return LEFT;
+				return RIGHT;
 			}
 			if ("L".equals(direction)) {
-				return RIGHT;
+				return LEFT;
 			}
 			if ("U".equals(direction)) {
 				return DOWN;
